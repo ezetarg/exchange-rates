@@ -5,7 +5,7 @@ metadata:
   labels:
     app: exchange-rates-api
 spec: # replica set
-  replicas: 3 # cantidad de pods
+  replicas: 1 # cantidad de pods
   selector:
     matchLabels:
       app: exchange-rates-api
@@ -30,7 +30,7 @@ kind: Service
 metadata:
   name: exchange-rates-service
 spec:
-  type: NodePort
+  type: LoadBalancer # NodePort
   selector:
     app: exchange-rates-api
   ports:
