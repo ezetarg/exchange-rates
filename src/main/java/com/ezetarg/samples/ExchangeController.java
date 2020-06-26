@@ -18,4 +18,9 @@ public class ExchangeController {
     public ExchangeResponse getRates() {
         return restTemplate.getForObject(ENDPOINT, ExchangeResponse.class);
     }
+
+    @RequestMapping("test")
+    public String test() {
+        return "hola mundo! " + Math.random();
+    }
 }
