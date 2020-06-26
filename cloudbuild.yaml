@@ -7,4 +7,11 @@ steps:
     args: ["assemble"]
   - name: gcr.io/cloud-builders/docker
     args: ["build", "-t", "gcr.io/$PROJECT_ID/exchange-rates", "--build-arg=JAR_FILE=build/libs/exchange-rates-1.0.0.jar", "."]
+  - name: "gcr.io/cloud-builders/gke-deploy"
+    args:
+      - run
+      - --filename=kubernetes.yaml
+      - --location=us-central1-c
+      - --cluster=my-first-cluster-1
+
 images: ["gcr.io/$PROJECT_ID/exchange-rates"]
