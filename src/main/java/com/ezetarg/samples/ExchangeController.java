@@ -19,7 +19,7 @@ public class ExchangeController {
         return restTemplate.getForObject(ENDPOINT, ExchangeResponse.class);
     }
 
-    @RequestMapping("test")
+    @RequestMapping("/test")
     public String test() {
         return "hola mundo! " + Math.random();
     }
