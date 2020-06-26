@@ -5,15 +5,15 @@ metadata:
   labels:
     app: exchange-rates-api
 spec: # replica set
-  replicas: 1 # cantidad de pods
+  replicas: 2 # cantidad de pods
   selector:
     matchLabels:
       app: exchange-rates-api
-  minReadySeconds: 30
+  minReadySeconds: 10
   strategy:
     rollingUpdate:
       maxSurge: 1
-      maxUnavailable: 0
+      maxUnavailable: 1
   template: # pod template
     metadata:
       labels:
