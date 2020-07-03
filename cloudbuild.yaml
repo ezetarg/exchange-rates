@@ -1,19 +1,15 @@
 steps:
   - name: gradle:jdk8
     entrypoint: gradle
-    args: ["test"]
-    id: test-jar
-  - name: gradle:jdk8
-    entrypoint: gradle
     args: ["assemble"]
     id: assemble-jar
-    waitFor:
-      - test-jar
+
   - name: gcr.io/cloud-builders/docker
     args: ["build", "-t", "gcr.io/$PROJECT_ID/exchange-rates", "--build-arg=JAR_FILE=build/libs/exchange-rates-1.0.0.jar", "."]
     id: build-docker-image
     waitFor:
       - assemble-jar
+
   - name: "gcr.io/cloud-builders/gke-deploy"
     args:
       - run

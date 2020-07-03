@@ -9,7 +9,7 @@ spec: # replica set
   selector:
     matchLabels:
       app: exchange-rates-api
-  minReadySeconds: 10
+  minReadySeconds: 30
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -24,7 +24,7 @@ spec: # replica set
           image: gcr.io/ezetarg-gke/exchange-rates
           ports:
             - containerPort: 8080
-              hostPort: 8080
+#              hostPort: 8080
 #          readinessProbe:
 #            httpGet:
 #              path: /actuator/health/readiness
