@@ -35,7 +35,6 @@ spec: # replica set
             httpGet:
               path: /actuator/health/liveness
               port: 8080
-            failureThreshold: 30
             initialDelaySeconds: 20
             periodSeconds: 10
             timeoutSeconds: 5

@@ -8,7 +8,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController("/health")
+@RestController
 public class HealthController {
     private final Logger logger = org.slf4j.LoggerFactory.getLogger(HealthController.class);
 
