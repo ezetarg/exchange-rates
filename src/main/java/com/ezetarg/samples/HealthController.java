@@ -19,8 +19,8 @@ public class HealthController {
     }
 
     @GetMapping("/complete-normally")
-    public String completeNormally() throws Exception {
-        return "Hello from Controller";
+    public String completeNormally() {
+        return "Hello from Controller " + Math.random();
     }
 
     @GetMapping("/i-will-sleep-for-30sec")
@@ -46,7 +46,6 @@ public class HealthController {
     public String markLivenessCorrect() {
         AvailabilityChangeEvent.publish(eventPublisher, this, LivenessState.CORRECT);
         return "Liveness marked as CORRECT";
-
     }
 
     @GetMapping("/liveness/broken")
