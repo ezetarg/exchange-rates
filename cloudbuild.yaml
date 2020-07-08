@@ -5,7 +5,12 @@ steps:
     id: assemble-jar
 
   - name: gcr.io/cloud-builders/docker
-    args: ["build", "-t", "gcr.io/$PROJECT_ID/exchange-rates", "--build-arg=JAR_FILE=build/libs/exchange-rates-1.0.0.jar", "."]
+    args:
+    - "build"
+    - "-t gcr.io/$PROJECT_ID/exchange-rates"
+    - "-t gcr.io/$PROJECT_ID/exchange-rates:$SHORT_SHA"
+    - "--build-arg=JAR_FILE=build/libs/exchange-rates-1.0.0.jar"
+    - "."
     id: build-docker-image
     waitFor:
       - assemble-jar
@@ -14,6 +19,7 @@ steps:
     args:
       - run
       - --filename=kubernetes.yaml
+      - --image=gcr.io/$PROJECT_ID/exchange-rates:$SHORT_SHA
       - --location=us-central1-c
       - --cluster=my-first-cluster-1
     waitFor:
