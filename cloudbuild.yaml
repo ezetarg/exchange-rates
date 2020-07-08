@@ -15,6 +15,14 @@ steps:
     waitFor:
       - assemble-jar
 
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - 'push'
+      - 'gcr.io/$PROJECT_ID/exchange-rates'
+    id: push-docker-image
+    waitFor:
+      - build-docker-image
+
   - name: "gcr.io/cloud-builders/gke-deploy"
     args:
       - run
@@ -23,6 +31,4 @@ steps:
       - --location=us-central1-c
       - --cluster=my-first-cluster-1
     waitFor:
-      - build-docker-image
-
-images: ["gcr.io/$PROJECT_ID/exchange-rates"]
+      - push-docker-image
