@@ -1,34 +1,36 @@
 steps:
   - name: gradle:jdk8
     entrypoint: gradle
-    args: ["assemble"]
-    id: assemble-jar
+    args: ["build"]
 
   - name: gcr.io/cloud-builders/docker
     args:
     - "build"
-    - '--tag=gcr.io/$PROJECT_ID/exchange-rates'
-    - '--tag=gcr.io/$PROJECT_ID/exchange-rates:$SHORT_SHA'
-    - "--build-arg=JAR_FILE=build/libs/exchange-rates-1.0.0.jar"
-    - "."
-    id: build-docker-image
-    waitFor:
-      - assemble-jar
+    - '--tag=gcr.io/$PROJECT_ID/$REPO_NAME'
+    - '--tag=gcr.io/$PROJECT_ID/$REPO_NAME:$TAG_NAME'
+    - '--build-arg=JAR_FILE=build/libs/exchange-rates-1.0.0.jar'
+    - '.'
 
   - name: gcr.io/cloud-builders/docker
     args:
       - 'push'
-      - 'gcr.io/$PROJECT_ID/exchange-rates'
-    id: push-docker-image
-    waitFor:
-      - build-docker-image
+      - 'gcr.io/$PROJECT_ID/$REPO_NAME'
 
   - name: "gcr.io/cloud-builders/gke-deploy"
     args:
-      - run
-      - --filename=kubernetes.yaml
-      - --image=gcr.io/$PROJECT_ID/exchange-rates:$SHORT_SHA
-      - --location=us-central1-c
-      - --cluster=my-first-cluster-1
-    waitFor:
-      - push-docker-image
+      - 'run'
+      - '--filename=kubernetes.yaml'
+      - '--image=gcr.io/$PROJECT_ID/$REPO_NAME:$TAG_NAME'
+      - '--location=${_CLUSTER_ZONE}'
+      - '--cluster=${_CLUSTER_NAME}'
+
+images:
+  - 'gcr.io/$PROJECT_ID/$REPO_NAME:$TAG_NAME'
+
+substitutions:
+  _CLUSTER_NAME: $PROJECT_ID
+  _CLUSTER_ZONE: us-central1-c
+  TAG_NAME: $SHORT_SHA
+
+tags:
+  - $REPO_NAME

@@ -44,11 +44,10 @@ kind: Service
 metadata:
   name: exchange-rates-service
 spec:
-  type: LoadBalancer # NodePort
+  type: NodePort
   selector:
     app: exchange-rates-api
   ports:
     - protocol: TCP
       port: 8080 # external port 80
       targetPort: 8080 # pod port
-
