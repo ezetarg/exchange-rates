@@ -1,14 +1,14 @@
 steps:
-  - name: gradle:jdk8
+  - name: gradle:jdk11
     entrypoint: gradle
-    args: ["build"]
+    args: ['build', '--no-daemon', '--parallel']
 
   - name: gcr.io/cloud-builders/docker
     args:
-    - "build"
+    - 'build'
     - '--tag=gcr.io/$PROJECT_ID/$REPO_NAME'
     - '--tag=gcr.io/$PROJECT_ID/$REPO_NAME:$TAG_NAME'
-    - '--build-arg=JAR_FILE=build/libs/exchange-rates-1.0.0.jar'
+    - '--build-arg=JAR_FILE=build/libs/exchange-rates-*.jar'
     - '.'
 
   - name: gcr.io/cloud-builders/docker
